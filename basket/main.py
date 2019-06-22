@@ -110,7 +110,7 @@ class Basket(object):
         extension = self.os.path.splitext(path)[1].split('.')[1]
         with self.tarfile.open(path, 'r:%s' % extension) as archive:
             for info in archive:
-                if info.name.endswith(
+                if os.path.normpath(info.name).endswith(
                     self.os.path.join('.egg-info', 'requires.txt')):
                     return map(text, archive.extractfile(info).readlines())
         return ()
@@ -121,7 +121,7 @@ class Basket(object):
         """
         with self.zipfile.ZipFile(path) as archive:
             for info in archive.infolist():
-                if info.filename.endswith(
+                if os.path.normpath(info.filename).endswith(
                     self.os.path.join('.egg-info', 'requires.txt')):
                     return map(text, archive.open(info).readlines())
         return ()
