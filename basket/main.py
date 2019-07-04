@@ -3,6 +3,7 @@ import os
 import sys
 import tarfile
 import zipfile
+import re
 
 from basket.compat import urllib
 from basket.compat import xmlrpclib
@@ -16,12 +17,10 @@ def get_package_name(line):
     """Return a package name from a line in the ``requirements.txt``
     file.
     """
-    idx = line.find('<')
-    if idx == -1:
-        idx = line.find('>')
-        if idx == -1:
-            idx = line.find('=')
-    if idx == -1:
+    res = re.findall('<=|>=|!=|~=|=|<|>|\)|\(',line)
+    if len(res) > 0:
+        idx = line.find(res[0])
+    else:
         return line
     return line[:idx].strip()
 
