@@ -50,6 +50,7 @@ class Basket(object):
     err = sys.stderr
     out = sys.stdout
     root = os.environ.get('BASKET_ROOT') or os.path.expanduser('~/.basket')
+    nonfind = list()
 
     @property
     def client(self):
@@ -220,6 +221,7 @@ class Basket(object):
             if info is None:
                 self.print_err(
                     'Could not find any package named "%s".' % package)
+                self.nonfind.append(package)
                 continue
             if self._has_package(info['name'], info['version']):
                 self.print_msg(
@@ -237,6 +239,7 @@ class Basket(object):
             if requirements:
                 self.print_msg('  -> requires: %s' % ', '.join(requirements))
                 self.packages.extendleft(requirements)
+        print (self.nonfind)
         return 0
 
     def cmd_prune(self, packages=()):
