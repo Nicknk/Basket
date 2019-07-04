@@ -27,3 +27,6 @@ nosetests.xml
 
 #Mr Developer
 .mr.developer.cfg
+
+#vscode settings
+.vscode
